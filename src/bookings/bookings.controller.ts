@@ -5,6 +5,7 @@ import { BookingStatusValidationPipe } from './pipes/booking-status-validation.p
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Booking } from './booking.entity';
 import { BookingsService } from './bookings.service';
+import { Request } from 'express';
 import {
   Body,
   Controller,
@@ -14,6 +15,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -29,9 +31,12 @@ export class BookingsController {
   @Post()
   @UsePipes(ValidationPipe)
   createBooking(
+    @Req() request: Request,
     @Body() createBookingDto: CreateBookingDto,
     @GetUser() user: User,
   ): Promise<Booking> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    user['jwt'] = jwt;
     return this.bookingsService.createBooking(createBookingDto, user);
   }
 

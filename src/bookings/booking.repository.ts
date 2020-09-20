@@ -22,15 +22,6 @@ export class BookingRepository extends Repository<Booking> {
     booking.distributorid = user.id;
     booking.customerid = customer.id;
 
-    // const cust = new Customer();
-    // cust.id = customer.id;
-    // cust.fullname = customer.fullname;
-    // cust.homeaddress = customer.homeaddress;
-    // cust.emailaddress = customer.emailaddress;
-    // cust.dateofbirth = customer.dateofbirth;
-    // cust.telephonenumber = customer.telephonenumber;
-    // booking.customer = cust;
-
     await booking.save();
     //delete booking.user;
     return booking;

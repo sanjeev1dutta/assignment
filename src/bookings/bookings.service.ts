@@ -19,35 +19,35 @@ export class BookingsService {
     createBookingDto: CreateBookingDto,
     user: User,
   ): Promise<Booking> {
-    // this.http
-    //   .get('http://localhost:4000/customers?search=d1c2@d1.com', {
-    //     headers: [
-    //       {
-    //         Authorization:
-    //           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRJU1RSSUJVVEVSMSIsImlhdCI6MTYwMDU5Njc5MSwiZXhwIjoxNjAwNjAwMzkxfQ.Wae9itPrehwoOItbatMRHfJP1S6VDFH4BQMKmW0SAJA',
-    //       },
-    //       { 'Content-Type': 'application/json' },
-    //     ],
-    //   })
-    //   .subscribe({
-    //     next(x) {
-    //       console.log('got value ' + x);
-    //     },
-    //     error(err) {
-    //       console.error('something wrong occurred: ' + err);
-    //     },
-    //     complete() {
-    //       console.log('done');
-    //     },
-    //   });
-
-    //.toPromise()
-    //.then(res => {
-    //console.log(response);
-    //})
-    //.catch(error => {
-    //   console.log(error);
-    // });
+    const { customer } = createBookingDto;
+    const data = {
+      id: customer.id,
+      fullname: customer.fullname,
+      homeaddress: customer.homeaddress,
+      emailaddress: customer.emailaddress,
+      dateofbirth: customer.dateofbirth,
+      telephonenumber: customer.dateofbirth,
+      distributorid: user.id,
+    };
+    try {
+      this.http
+        .post('http://localhost:4000/customers', data, {
+          headers: {
+            Authorization: `Bearer ${user['jwt']}`,
+          },
+        })
+        .subscribe({
+          // next(x) {
+          //   console.log('got value ' + JSON.stringify(x));
+          // },
+          error(err) {
+            console.error('something wrong occurred: ' + err);
+          },
+          // complete() {
+          //   console.log('done');
+          // },
+        });
+    } catch (err) {}
 
     return await this.bookingRepository.createBooking(createBookingDto, user);
   }
