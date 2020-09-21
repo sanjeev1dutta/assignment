@@ -18,7 +18,7 @@ export class ApiClient {
         default:
           throw new NotImplementedException();
       }
-      //console.log(custEndpointUrl, data['jwt']);
+
       this.http
         .post(custEndpointUrl, data['payload'], {
           headers: {
