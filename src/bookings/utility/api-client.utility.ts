@@ -7,10 +7,12 @@ export class ApiClient {
     try {
       let custEndpointUrl: string;
       switch ((data['country'] as string).toUpperCase()) {
+        case 'EU':
         case 'UK':
           custEndpointUrl = 'http://localhost:4000/customers';
           break;
         case 'USA':
+        case 'US':
           custEndpointUrl = 'http://localhost:5000/customers';
           break;
         default:
