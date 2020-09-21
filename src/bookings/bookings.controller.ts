@@ -22,9 +22,11 @@ import {
 } from '@nestjs/common';
 import { BookingStatus } from './booking-status.enum';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('bookings')
 @UseGuards(AuthGuard())
+@ApiBearerAuth()
 export class BookingsController {
   constructor(private bookingsService: BookingsService) {}
 
@@ -35,7 +37,7 @@ export class BookingsController {
     @Body() createBookingDto: CreateBookingDto,
     @GetUser() user: User,
   ): Promise<Booking> {
-    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const jwt = request.headers.authorization;
     user['jwt'] = jwt;
     return this.bookingsService.createBooking(createBookingDto, user);
   }

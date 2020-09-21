@@ -59,6 +59,10 @@ export class AuthRepository extends Repository<User> {
     }
   }
 
+  async getUser(username: string): Promise<User> {
+    return await this.findOne({ username });
+  }
+
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }

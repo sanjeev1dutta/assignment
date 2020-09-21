@@ -1,3 +1,4 @@
+import { ApiClient } from './utility/api-client.utility';
 import { GetBookingsFilterDto } from './dto/get-bookings-filter.dto';
 import { User } from './../auth/user.entity';
 import { BookingRepository } from './booking.repository';
@@ -19,35 +20,10 @@ export class BookingsService {
     createBookingDto: CreateBookingDto,
     user: User,
   ): Promise<Booking> {
-    const { customer } = createBookingDto;
-    const data = {
-      id: customer.id,
-      fullname: customer.fullname,
-      homeaddress: customer.homeaddress,
-      emailaddress: customer.emailaddress,
-      dateofbirth: customer.dateofbirth,
-      telephonenumber: customer.dateofbirth,
-      distributorid: user.id,
-    };
-    try {
-      this.http
-        .post('http://localhost:4000/customers', data, {
-          headers: {
-            Authorization: `Bearer ${user['jwt']}`,
-          },
-        })
-        .subscribe({
-          // next(x) {
-          //   console.log('got value ' + JSON.stringify(x));
-          // },
-          error(err) {
-            console.error('something wrong occurred: ' + err);
-          },
-          // complete() {
-          //   console.log('done');
-          // },
-        });
-    } catch (err) {}
+    //location of PII storage is defined by customer residence country
+    const data = this.getApiEndpointInput(createBookingDto, user);
+    const client = new ApiClient(this.http);
+    client.post(data);
 
     return await this.bookingRepository.createBooking(createBookingDto, user);
   }
@@ -92,5 +68,25 @@ export class BookingsService {
 
   async deleteBooking(id: string, user: User): Promise<void> {
     await this.bookingRepository.deleteBooking(id, user);
+  }
+
+  private getApiEndpointInput(
+    createBookingDto: CreateBookingDto,
+    user: User,
+  ): any {
+    const { customer } = createBookingDto;
+    const data = {};
+    data['jwt'] = user['jwt'];
+    data['payload'] = {
+      id: customer.id,
+      fullname: customer.fullname,
+      homeaddress: customer.homeaddress,
+      emailaddress: customer.emailaddress,
+      dateofbirth: customer.dateofbirth,
+      telephonenumber: customer.dateofbirth,
+      distributorid: user.id,
+    };
+    data['country'] = customer.homeaddress;
+    return data;
   }
 }

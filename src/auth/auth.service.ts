@@ -1,3 +1,4 @@
+import { User } from './user.entity';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { AuthRepository } from './auth.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -32,5 +33,9 @@ export class AuthService {
     const tokenPayload: JwtPayload = { username };
     const accessToken = await this.jwtService.sign(tokenPayload);
     return { accessToken };
+  }
+
+  async getUser(username: string): Promise<User> {
+    return await this.userRepository.getUser(username);
   }
 }
