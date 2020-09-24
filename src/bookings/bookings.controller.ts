@@ -16,6 +16,7 @@ import {
   Post,
   Query,
   Req,
+  UseFilters,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -23,9 +24,11 @@ import {
 import { BookingStatus } from './booking-status.enum';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('bookings')
 @UseGuards(AuthGuard())
+@UseFilters(new HttpExceptionFilter())
 @ApiBearerAuth()
 export class BookingsController {
   constructor(private bookingsService: BookingsService) {}

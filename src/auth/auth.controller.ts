@@ -5,13 +5,16 @@ import {
   Get,
   Param,
   Post,
+  UseFilters,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthSignUpDto } from './dto/auth-signup.dto';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
+import { HttpExceptionFilter } from 'src/filter/http-exception.filter';
 
 @Controller('auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthController {
   constructor(private authService: AuthService) {}
 

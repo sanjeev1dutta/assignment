@@ -1,4 +1,4 @@
-import { HttpService, NotImplementedException } from '@nestjs/common';
+import { HttpService } from '@nestjs/common';
 
 export class ApiClient {
   constructor(private readonly http: HttpService) {}
@@ -6,17 +6,14 @@ export class ApiClient {
   post(data) {
     try {
       let custEndpointUrl: string;
-      switch ((data['country'] as string).toUpperCase()) {
-        case 'EU':
-        case 'UK':
-          custEndpointUrl = 'http://localhost:4000/customers';
-          break;
-        case 'USA':
+      switch (data['country'].toUpperCase()) {
         case 'US':
           custEndpointUrl = 'http://localhost:5000/customers';
           break;
+        case 'GB':
         default:
-          throw new NotImplementedException();
+          custEndpointUrl = 'http://localhost:4000/customers';
+          break;
       }
 
       this.http
@@ -36,6 +33,8 @@ export class ApiClient {
           //   console.log('done');
           // },
         });
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

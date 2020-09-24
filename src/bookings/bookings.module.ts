@@ -4,6 +4,7 @@ import { BookingRepository } from './booking.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookingsController } from './bookings.controller';
 import { BookingsService } from './bookings.service';
+import { LocationService } from 'src/utility/location.service';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { BookingsService } from './bookings.service';
     AuthModule,
   ],
   controllers: [BookingsController],
-  providers: [BookingsService],
+  providers: [BookingsService, LocationService],
 })
 export class BookingsModule {}

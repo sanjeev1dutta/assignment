@@ -5,14 +5,17 @@ import { BookingRepository } from './booking.repository';
 import { BookingStatus } from './booking-status.enum';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { Booking } from './booking.entity';
-import { HttpService, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LocationService } from 'src/utility/location.service';
+import { countries } from 'src/utility/country';
 
 @Injectable()
 export class BookingsService {
   constructor(
     @InjectRepository(BookingRepository)
     private bookingRepository: BookingRepository,
+    private locationService: LocationService,
     private readonly http: HttpService,
   ) {}
 
@@ -21,7 +24,7 @@ export class BookingsService {
     user: User,
   ): Promise<Booking> {
     //location of PII storage is defined by customer residence country
-    const data = this.getApiEndpointInput(createBookingDto, user);
+    const data = await this.getApiEndpointInput(createBookingDto, user);
     const client = new ApiClient(this.http);
     client.post(data);
 
@@ -70,10 +73,10 @@ export class BookingsService {
     await this.bookingRepository.deleteBooking(id, user);
   }
 
-  private getApiEndpointInput(
+  private async getApiEndpointInput(
     createBookingDto: CreateBookingDto,
     user: User,
-  ): any {
+  ): Promise<any> {
     const { customer } = createBookingDto;
     const data = {};
     data['jwt'] = user['jwt'];
@@ -86,7 +89,23 @@ export class BookingsService {
       telephonenumber: customer.dateofbirth,
       distributorid: user.id,
     };
-    data['country'] = customer.homeaddress;
+
+    const country = await this.locationService.geoCountry(customer.homeaddress);
+    data['country'] = this.getCountryCode(country);
     return data;
+  }
+
+  private getCountryCode(arrCountry): string {
+    const [...countryCodes] = arrCountry.map(item => item.countryCode);
+    if (
+      countryCodes &&
+      countryCodes.length > 0 &&
+      countryCodes.every((val, i, arr) => val === arr[0])
+    ) {
+      if (countries.some(item => item.code === countryCodes[0].toUpperCase())) {
+        return countryCodes[0];
+      }
+    }
+    throw new BadRequestException('Customer country not recognizable');
   }
 }

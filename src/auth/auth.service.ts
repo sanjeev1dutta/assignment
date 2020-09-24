@@ -1,11 +1,12 @@
 import { User } from './user.entity';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { AuthRepository } from './auth.repository';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { AuthSignUpDto } from './dto/auth-signup.dto';
+import { SigninException } from 'src/exception/signin.exception';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
     );
 
     if (!username) {
-      throw new UnauthorizedException('Invalid user credentials');
+      throw new SigninException('Invalid user credentials');
     }
 
     const tokenPayload: JwtPayload = { username };

@@ -6,7 +6,9 @@ import { AuthService } from './auth.service';
 import { AuthRepository } from './auth.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-// import { User } from './user.entity';
+import * as config from 'config';
+
+const jwtConfig = config.get('jwt');
 
 @Module({
   imports: [
@@ -14,18 +16,11 @@ import { PassportModule } from '@nestjs/passport';
       defaultStrategy: 'jwt',
     }),
     JwtModule.register({
-      secret: 'topSecret51', // ideally this secretKey must be read from secret store
+      secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: jwtConfig.expires,
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'mongodb',
-    //   url: 'mongodb://localhost/carrental',
-    //   synchronize: true,
-    //   useUnifiedTopology: true, //mongodb specific - purpose not clear, perhaps to be used to handle some depreciation in future
-    //   entities: [User],
-    // }),
     TypeOrmModule.forFeature([AuthRepository]),
   ],
   controllers: [AuthController],

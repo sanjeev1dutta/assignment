@@ -1,0 +1,12 @@
+db:
+  host: 'localhost'
+  username: 'tbd'
+  password: 'tbd'
+  synchronize: true
+  url: 'mongodb://localhost/carrental1'
+
+jwt:
+  secret: 'topSecret51'
+
+geocoding:
+  apiKey: 'd6038fb8b59d49fbaa792d12dfc78360'
