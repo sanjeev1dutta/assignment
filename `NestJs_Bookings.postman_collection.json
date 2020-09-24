@@ -1,0 +1,340 @@
+{
+	"variables": [],
+	"info": {
+		"name": "`NestJs Bookings",
+		"_postman_id": "48587d48-2df9-b5e6-4f60-6a6cdc9eac16",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign Up",
+			"request": {
+				"url": "http://localhost:3000/auth/signup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"DISTRIBUTER1\",\n\t\"password\": \"Password@123\",\n\t\"fullname\":\"DISTRIBUTER 1\",\n\t\"homeaddress\":\"\",\n\t\"emailaddress\":\"\",\n\t\"dateofbirth\":\"\",\n\t\"telephonenumber\":\"\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign In",
+			"request": {
+				"url": "http://localhost:3000/auth/signin",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"DISTRIBUTER1\",\n\t\"password\": \"Password@123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Booking",
+			"request": {
+				"url": "http://localhost:3000/bookings",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"picklocation\": \"start point1\",\n\t\"droplocation\": \"end point1\",\n\t\"customer\": {\n\t    \"id\": \"d1c3\",\n\t    \"fullname\": \"d1 c3\",\n\t    \"homeaddress\": \"blobk c prince georje lane raleign north carolina\",\n\t    \"emailaddress\": \"d1c3@d1.com\",\n\t    \"dateofbirth\": \"\",\n\t    \"telephonenumber\": \"\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Bookings",
+			"request": {
+				"url": "http://localhost:3000/bookings",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": \"DONE\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Booking Status",
+			"request": {
+				"url": "http://localhost:3000/bookings/683615d9-83e4-4838-a8fe-71f1f0e83487/status",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": \"IN_PROGRESS\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Booking By Id",
+			"request": {
+				"url": "http://localhost:3000/bookings/14fc4c92-a6d5-4fb4-a524-1ab540150dd3",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": \"DONE\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Booking",
+			"request": {
+				"url": "http://localhost:3000/bookings/683615d9-83e4-4838-a8fe-71f1f0e83487",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": \"DONE\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Search Cus By Dist",
+			"request": {
+				"url": "http://localhost:3000/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\":\"d2 c1\",\n\t\"emailaddress\":\"d1c1@d1.com\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Store Customer",
+			"request": {
+				"url": "http://localhost:5000/customers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"d1c1\",\r\n    \"fullname\": \"d1 c1\",\r\n    \"homeaddress\": \"prince georje lane raleign north carolina\",\r\n    \"emailaddress\": \"d1c1@d1.com\",\r\n    \"dateofbirth\": \"\",\r\n    \"telephonenumber\": \"\",\r\n    \"distributorid\": \"2f774107-d339-4d94-b349-76126250438b\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Customer",
+			"request": {
+				"url": "http://localhost:4000/customers/d1c1",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\":\"d1 c1\",\n\t\"homeaddress\":\"\",\n\t\"emailaddress\":\"d1c1@d1.com\",\n\t\"dateofbirth\":\"\",\n\t\"telephonenumber\":\"\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve All Cust",
+			"request": {
+				"url": "http://localhost:5000/customers",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\":\"d1 c1\",\n\t\"emailaddress\":\"\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Customer",
+			"request": {
+				"url": "http://localhost:4000/customers/d1c1",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Search Cust By Name or Email",
+			"request": {
+				"url": {
+					"raw": "http://localhost:6000/customers?search=d1 c1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6000",
+					"path": [
+						"customers"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "d1 c1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{accessToken_dist1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fullname\":\"d1 c1\",\n\t\"emailaddress\":\"\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
