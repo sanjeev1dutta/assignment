@@ -10,6 +10,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LocationService } from 'src/utility/location.service';
 import { countries } from 'src/utility/country';
 
+import * as config from 'config';
+
+const custConfig = config.get('cust');
+
 @Injectable()
 export class BookingsService {
   constructor(
@@ -25,10 +29,17 @@ export class BookingsService {
   ): Promise<Booking> {
     //location of PII storage is defined by customer residence country
     const data = await this.getApiEndpointInput(createBookingDto, user);
+    const url = this.getApiEndpointUrl(data['country']);
     const client = new ApiClient(this.http);
-    client.post(data);
+    const custStore = await client.post(url, data, {
+      Authorization: `${data['jwt']}`,
+    });
 
-    return await this.bookingRepository.createBooking(createBookingDto, user);
+    const { status } = custStore;
+    if (status === 201) {
+      return await this.bookingRepository.createBooking(createBookingDto, user);
+    }
+    return null;
   }
 
   async getAllBookings(user: User): Promise<Booking[]> {
@@ -87,12 +98,21 @@ export class BookingsService {
       emailaddress: customer.emailaddress,
       dateofbirth: customer.dateofbirth,
       telephonenumber: customer.dateofbirth,
-      distributorid: user.id,
     };
 
     const country = await this.locationService.geoCountry(customer.homeaddress);
     data['country'] = this.getCountryCode(country);
     return data;
+  }
+
+  private getApiEndpointUrl(code: string): string {
+    switch (code.toUpperCase()) {
+      case 'US':
+        return process.env.US_URL || custConfig.usurl;
+      case 'GB':
+      default:
+        return process.env.UK_URL || custConfig.ukurl;
+    }
   }
 
   private getCountryCode(arrCountry): string {
