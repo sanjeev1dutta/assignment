@@ -3,7 +3,7 @@ db:
   username: 'tbd'
   password: 'tbd'
   synchronize: true
-  url: 'mongodb://localhost/carrental1'
+  url: 'mongodb://mongo-db:27017/carrental1'
 
 jwt:
   secret: 'topSecret51'
@@ -12,5 +12,5 @@ geocoding:
   apiKey: 'd6038fb8b59d49fbaa792d12dfc78360'
 
 cust:
-  ukurl: 'http://localhost:4000/customers'
-  usurl: 'http://localhost:5000/customers'
+  ukurl: 'http://car-rental-gateway-pii-uk:4000/customers'
+  usurl: 'http://car-rental-gateway-pii-us:5000/customers'

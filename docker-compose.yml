@@ -1,0 +1,60 @@
+version: '3'
+services:
+  mongo-db:
+    image: 'mongo'
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
+  car-rental-gateway-pii-uk:
+    image: '177f9663970a'
+    environment:
+      PORT: 4000
+      DB_URL: 'mongodb://mongo-db:27017/carrental1'
+      JWT_SECRET: 'topSecret51'
+    ports:
+      - '4000:4000'
+  car-rental-gateway-pii-us:
+    image: '177f9663970a'
+    environment:
+      PORT: 5000
+      DB_URL: 'mongodb://mongo-db:27017/carrental2'
+      JWT_SECRET: 'topSecret51'
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mongo-db
+  car-rental-gateway:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /app/node_modules
+      - .:/app
+    environment:
+      PORT: 3000
+      JWT_SECRET: 'topSecret51'
+      UK_URL: 'http://car-rental-gateway-pii-uk:4000/customers'
+      US_URL: 'http://car-rental-gateway-pii-us:5000/customers'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo-db
+      - car-rental-gateway-pii-us
+      - car-rental-gateway-pii-uk
+# version: "3"
+# services:
+#   mongo-db:
+#     image: "mongo"
+#   car-rental-gateway:
+#     build: .
+#     ports:
+#       - "3001:3001"
+#   car-rental-gateway-pii-uk:
+#     image: "94714f3fa5e4"
+#     ports:
+#       - "4000:4000"
+#   car-rental-gateway-pii-us:
+#     image: "94714f3fa5e4"
+#     ports:
+#       - "5000:5000"
