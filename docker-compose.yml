@@ -6,6 +6,10 @@ services:
       - ./data:/data/db
     ports:
       - '27017:27017'
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
   car-rental-gateway-pii-uk:
     image: 'sanjeev1dutta/customer-pii'
     environment:
@@ -42,6 +46,16 @@ services:
       - mongo-db
       - car-rental-gateway-pii-us
       - car-rental-gateway-pii-uk
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=root
+      - HTTP_PASSWORD=qwerty
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
 # version: "3"
 # services:
 #   mongo-db:

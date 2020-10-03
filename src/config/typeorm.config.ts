@@ -14,4 +14,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize,
   useUnifiedTopology: true, //mongodb specific - purpose not clear, perhaps to be used to handle some depreciation in future
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  cache: {
+    duration: 10000,
+  },
 };

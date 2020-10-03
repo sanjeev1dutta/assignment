@@ -1,5 +1,5 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { AuthModule } from './../auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { BookingRepository } from './booking.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookingsController } from './bookings.controller';

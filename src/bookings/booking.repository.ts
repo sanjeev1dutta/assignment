@@ -28,11 +28,20 @@ export class BookingRepository extends Repository<Booking> {
   }
 
   async getAllBookings(user: User): Promise<Booking[]> {
-    return await this.find({ distributorid: user.id });
+    return await this.find({
+      where: { distributorid: user.id },
+      cache: true,
+    });
   }
 
   async getBookingById(id: string, user: User): Promise<Booking> {
-    const found = await this.findOne({ id, distributorid: user.id });
+    const found = await this.findOne({
+      where: {
+        id,
+        distributorid: user.id,
+      },
+      cache: true,
+    });
     if (!found)
       throw new NotFoundException(`Booking with Id "${id}" not found`);
 
